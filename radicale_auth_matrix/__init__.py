@@ -7,6 +7,7 @@ import hashlib
 import urllib
 import urllib.request
 from radicale import auth, config
+from radicale.log import logger
 
 
 class Auth(auth.BaseAuth):
@@ -17,6 +18,7 @@ class Auth(auth.BaseAuth):
         super().__init__(configuration)
         self._server = configuration.get("auth", "matrix_server")
         self._cache = {}
+        logger.debug("Matrix authentication backend initialized")
 
     def _loginURL(self) -> str:
         return "{}/_matrix/client/v3/login".format(self._server)
@@ -54,8 +56,10 @@ class Auth(auth.BaseAuth):
     def _isLoggedIn(self, login: str, password: str) -> bool:
         return self._loggedInHash(login, password) in self._cache.keys()
 
-    def login(self, login: str, password: str) -> str:
+    def _login(self, login: str, password: str) -> str:
+        logger.debug("Matrix authentication backend: trying to authenticate {}".format(login))
         if self._isLoggedIn(login, password):
+            logger.debug("Matrix authentication backend: already authenticated {}".format(login))
             return login
 
         req = urllib.request.Request(
@@ -69,6 +73,8 @@ class Auth(auth.BaseAuth):
             data = json.loads(resp.read().decode("utf-8"))
             self._logout(data['access_token'])
             self._loggedIn(login, password)
+            logger.debug("Matrix authentication backend: authenticated {}".format(login))
             return login
         except urllib.error.HTTPError as e:
+            logger.debug("Matrix authentication backend: authentication failed for {}: {}".format(login, e))
             return ""

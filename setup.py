@@ -7,11 +7,11 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="radicale_auth_matrix",
-    version="0.1",
+    version="0.1.1",
     description="matrix.org authentication plugin for Radicale",
     long_description=desc,
     author="etke.cc",
-    url="https://gitlab.com/etke.cc/radicale-auth-matrix",
+    url="https://github.com/etkecc/radicale-auth-matrix",
     packages=setuptools.find_packages(),
     include_package_data=True,
     license="GPL3+",
