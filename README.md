@@ -3,6 +3,7 @@
 [Radicale](https://radicale.org) is a CalDAV and CardDAV server, for storing calendars and contacts.
 That module provides an authentication plugin for Radicale to make use of Matrix server as auth backend.
 
+There is a [dockerized Radicale with this plugin enabled](https://github.com/etkecc/radicale)
 
 ## How To Use
 
